@@ -40,7 +40,8 @@
   "dependencies": {
     "inversify": "^5.0.1",
     "reflect-metadata": "^0.1.13",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.0",
