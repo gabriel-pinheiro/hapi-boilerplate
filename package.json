@@ -1,0 +1,53 @@
+{
+  "name": "hapi-boilerplate",
+  "version": "1.0.0",
+  "description": "HapiJS boilerplate written in TypeScript",
+  "main": "src/main.ts",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "start": "node dist/main",
+    "start:dev": "ts-node src/main.ts",
+    "start:prod": "node dist/main",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabriel-pinheiro/hapi-boilerplate.git"
+  },
+  "author": "Gabriel Pinheiro <gabrielctpinheiro@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gabriel-pinheiro/hapi-boilerplate/issues"
+  },
+  "homepage": "https://github.com/gabriel-pinheiro/hapi-boilerplate#readme",
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  },
+  "dependencies": {
+    "inversify": "^5.0.1",
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.0",
+    "@types/node": "^14.0.13",
+    "jest": "^26.0.1",
+    "ts-jest": "^26.1.0",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.5"
+  }
+}
