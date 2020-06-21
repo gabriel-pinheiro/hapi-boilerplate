@@ -18,13 +18,16 @@ export class Server {
     ) { }
 
     async start(): Promise<Server> {
-        this.logger.info('Starting server');
+        this.logger.info('Creating the server');
         this.app = new Hapi.Server({
             host: this.config.get('SERVER_HOST'),
             port: this.config.getNumber('SERVER_PORT')
         });
 
+        this.logger.info('Mapping routes');
         this.app.route(this.router.routes);
+
+        this.logger.info('Registering plugins');
         await this.app.register({
             plugin: laabr,
             options: {
@@ -35,14 +38,16 @@ export class Server {
                 }
             }
         });
-        await this.app.start();
-        this.logger.info('Server is running on ' + this.app.info.uri);
 
+        this.logger.info('Starting the server');
+        await this.app.start();
+
+        this.logger.info('Server is running on ' + this.app.info.uri);
         return this;
     }
 
     async stop() {
-        this.logger.info('Stopping server');
+        this.logger.info('Stopping the server');
         await this.app.stop();
         this.logger.info('Bye :)');
         process.exit(0);
