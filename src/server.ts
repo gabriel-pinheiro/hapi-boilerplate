@@ -4,6 +4,7 @@ import { inject } from "inversify";
 import {ConfigProvider} from "./config/config.service";
 import * as Hapi from '@hapi/hapi';
 import * as laabr from 'laabr';
+import {MainRouter} from "./main.router";
 
 @Provider()
 export class Server {
@@ -12,7 +13,8 @@ export class Server {
     constructor(
         @inject(Logger)
         private readonly logger: ILogger,
-        private readonly config: ConfigProvider
+        private readonly config: ConfigProvider,
+        private readonly router: MainRouter,
     ) { }
 
     async start(): Promise<Server> {
@@ -22,6 +24,7 @@ export class Server {
             port: this.config.getNumber('SERVER_PORT')
         });
 
+        this.app.route(this.router.routes);
         await this.app.register({
             plugin: laabr,
             options: {
