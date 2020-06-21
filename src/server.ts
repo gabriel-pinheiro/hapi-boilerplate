@@ -3,8 +3,8 @@ import { ILogger, Logger } from './utils/logger';
 import { inject } from "inversify";
 import {ConfigProvider} from "./config/config.service";
 import * as Hapi from '@hapi/hapi';
-import * as laabr from 'laabr';
 import {MainRouter} from "./main.router";
+import {PluginProvider} from "./plugins";
 
 @Provider()
 export class Server {
@@ -15,6 +15,7 @@ export class Server {
         private readonly logger: ILogger,
         private readonly config: ConfigProvider,
         private readonly router: MainRouter,
+        private readonly pluginProvider: PluginProvider,
     ) { }
 
     async start(): Promise<Server> {
@@ -28,16 +29,8 @@ export class Server {
         this.app.route(this.router.routes);
 
         this.logger.info('Registering plugins');
-        await this.app.register({
-            plugin: laabr,
-            options: {
-                formats: {
-                    response: this.config.get('SERVER_LOG-FORMAT'),
-                    onPostStart: '\0',
-                    onPostStop: '\0',
-                }
-            }
-        });
+        const pluginRegistrationTasks = this.pluginProvider.plugins.map(plugin => this.app.register(plugin));
+        await Promise.all(pluginRegistrationTasks);
 
         this.logger.info('Starting the server');
         await this.app.start();
