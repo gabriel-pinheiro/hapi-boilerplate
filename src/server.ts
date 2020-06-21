@@ -3,6 +3,7 @@ import { ILogger, Logger } from './utils/logger';
 import { inject } from "inversify";
 import {ConfigProvider} from "./config/config.service";
 import * as Hapi from '@hapi/hapi';
+import * as laabr from 'laabr';
 
 @Provider()
 export class Server {
@@ -21,6 +22,16 @@ export class Server {
             port: this.config.getNumber('SERVER_PORT')
         });
 
+        await this.app.register({
+            plugin: laabr,
+            options: {
+                formats: {
+                    response: this.config.get('SERVER_LOG-FORMAT'),
+                    onPostStart: '\0',
+                    onPostStop: '\0',
+                }
+            }
+        });
         await this.app.start();
         this.logger.info('Server is running on ' + this.app.info.uri);
 

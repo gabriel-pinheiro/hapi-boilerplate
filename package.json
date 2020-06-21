@@ -42,6 +42,7 @@
     "dotenv": "^8.2.0",
     "fs": "0.0.1-security",
     "inversify": "^5.0.1",
+    "laabr": "^6.1.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "winston": "^3.2.1"
