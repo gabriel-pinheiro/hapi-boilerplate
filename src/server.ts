@@ -6,9 +6,12 @@ import * as Hapi from '@hapi/hapi';
 import {MainRouter} from "./main.router";
 import {PluginProvider} from "./plugins";
 
+const debug = require('debug')('app:server');
+
 @Provider()
 export class Server {
     private app: Hapi.Server;
+    private startDate: Date;
 
     constructor(
         @inject(Logger)
@@ -19,28 +22,30 @@ export class Server {
     ) { }
 
     async start(): Promise<Server> {
-        this.logger.info('Creating the server');
+        debug('creating the server');
+        this.startDate = new Date();
         this.app = new Hapi.Server({
             host: this.config.get('SERVER_HOST'),
             port: this.config.getNumber('SERVER_PORT')
         });
 
-        this.logger.info('Mapping routes');
+        debug('mapping routes');
         this.app.route(this.router.routes);
 
-        this.logger.info('Registering plugins');
+        debug('Registering plugins');
         const pluginRegistrationTasks = this.pluginProvider.plugins.map(plugin => this.app.register(plugin));
         await Promise.all(pluginRegistrationTasks);
 
-        this.logger.info('Starting the server');
+        debug('Starting the server');
         await this.app.start();
 
-        this.logger.info('Server is running on ' + this.app.info.uri);
+        const deltaT = (new Date().getTime() - this.startDate.getTime()) / 1000;
+        this.logger.info(`Server started on port ${this.config.getNumber('SERVER_PORT')} after ${deltaT} seconds`);
         return this;
     }
 
     async stop() {
-        this.logger.info('Stopping the server');
+        debug('Stopping the server');
         await this.app.stop();
         this.logger.info('Bye :)');
     }

@@ -4,8 +4,10 @@ import { Server } from './server';
 import { ILogger, Logger, logger } from './utils/logger';
 import {configProvider, ConfigProvider} from "./config/config.service";
 
+const debug = require('debug')('app:main');
+
 async function bootstrap() {
-    logger.info('Resolving dependencies');
+    debug('resolving dependencies');
     const container = new Container({
         autoBindInjectable: true,
     });

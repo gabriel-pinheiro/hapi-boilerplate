@@ -1,3 +1,5 @@
+process.env.SILENT = 'true';
+
 const App = require('../dist/main');
 
 const Code = require('@hapi/code');
