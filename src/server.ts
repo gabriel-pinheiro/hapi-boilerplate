@@ -43,6 +43,5 @@ export class Server {
         this.logger.info('Stopping the server');
         await this.app.stop();
         this.logger.info('Bye :)');
-        process.exit(0);
     }
 }
