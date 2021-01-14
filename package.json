@@ -7,7 +7,7 @@
     "prebuild": "rimraf dist",
     "build": "tsc",
     "start": "node dist/main",
-    "start:dev": "ts-node src/main.ts",
+    "start:dev": "nodemon --config nodemon.json",
     "start:prod": "node dist/main",
     "pretest": "tsc",
     "test": "lab -I require -a @hapi/code"
@@ -38,6 +38,7 @@
     "@types/hapi__hapi": "^19.0.3",
     "@types/node": "^14.0.13",
     "axios": "^0.21.1",
+    "nodemon": "^2.0.7",
     "rimraf": "^3.0.2",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
