@@ -5,6 +5,7 @@ import {ConfigProvider} from "./config/config.service";
 import * as Hapi from '@hapi/hapi';
 import {MainRouter} from "./main.router";
 import {PluginProvider} from "./plugins";
+import { ServerRoute } from "@hapi/hapi";
 
 const debug = require('debug')('app:server');
 
@@ -30,7 +31,8 @@ export class Server {
         });
 
         debug('mapping routes');
-        this.app.route(this.router.routes);
+        const routes = await this.router.getRoutes();
+        routes.forEach(route => this.registerRoute(route));
 
         debug('Registering plugins');
         const pluginRegistrationTasks = this.pluginProvider.plugins.map(plugin => this.app.register(plugin));
@@ -48,5 +50,21 @@ export class Server {
         debug('Stopping the server');
         await this.app.stop();
         this.logger.info('Bye :)');
+    }
+
+    private registerRoute(route: ServerRoute) {
+        try {
+            const logMessage = `Mapping '${route.vhost ? `(${route.vhost}) `:''}${route.method} ${route.path}'`;
+
+            if(route.rules?.['mapSilently']) {
+                debug(logMessage);
+            } else {
+                this.logger.info(logMessage);
+            }
+
+            this.app.route(route);
+        } catch (e) {
+            this.logger.warn(`Failed to map '${route.method} ${route.path}': ${e.message}`);
+        }
     }
 }

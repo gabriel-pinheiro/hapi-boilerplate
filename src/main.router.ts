@@ -1,6 +1,6 @@
 import {IRouter} from "./utils/router";
-import {CatRouter} from "./api/cat/cat.router";
 import {Provider} from "./utils/decorators/provider";
+import {CatRouter} from "./api/cat/cat.router";
 
 @Provider()
 export class MainRouter implements IRouter {
@@ -8,5 +8,11 @@ export class MainRouter implements IRouter {
         private readonly catRouter: CatRouter,
     ) { }
 
-    readonly routes = [...this.catRouter.routes];
+    async getRoutes() {
+        const routes = await Promise.all([
+            this.catRouter.getRoutes(),
+        ]);
+
+        return routes.flat();
+    }
 }

@@ -8,9 +8,11 @@ export class CatRouter implements IRouter{
         private readonly controller: CatController,
     ) { }
 
-    readonly routes = [{
-        method: 'GET',
-        path: '/cats',
-        handler: this.controller.listAll.bind(this.controller),
-    }];
+    async getRoutes() {
+        return [{
+            method: 'GET',
+            path: '/cats',
+            handler: this.controller.listAll.bind(this.controller),
+        }];
+    }
 }
