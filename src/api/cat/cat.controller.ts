@@ -8,7 +8,7 @@ export class CatController {
         private readonly service: CatService,
     ) { }
 
-    async listAll(request: Hapi.Request, toolkit: Hapi.ResponseToolkit) {
+    async listAll(request: Hapi.Request, h: Hapi.ResponseToolkit) {
         return await this.service.listAll();
     }
 }
