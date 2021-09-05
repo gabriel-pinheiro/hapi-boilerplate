@@ -50,6 +50,7 @@ export class Server {
         debug('Stopping the server');
         await this.app.stop();
         this.logger.info('Bye :)');
+        process.exit(0);
     }
 
     private registerRoute(route: ServerRoute) {
