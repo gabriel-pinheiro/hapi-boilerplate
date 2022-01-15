@@ -23,8 +23,8 @@ describe('main', () => {
         await server.stop();
     });
 
-    it('should succeed on getting cats', async () => {
-        const { status } = await api.get('/cats');
+    it('should pass healthcheck', async () => {
+        const { status } = await api.get('/health');
         expect(status).to.equal(200);
     });
 })
